@@ -79,9 +79,9 @@
         Sym {
             label = "Sym";
             bindings = <
-          &kp EXCL  &kp AT  &kp HASH  &kp DOLLAR  &kp PERCENT    &kp CARET  &kp AMPERSAND  &kp KP_ASTERISK  &kp SQT  &kp DQT
-          &trans    &trans  &trans    &trans      &trans         &trans     &trans         &trans           &trans   &trans
-&kp HOME  &trans    &trans  &trans    &trans      &trans         &kp UNDER  &kp EQUAL      &trans           &trans   &kp SLASH  &kp END
+          &kp EXCL  &kp AT  &kp HASH  &kp DOLLAR  &kp PERCENT    &kp CARET  &kp AMPERSAND  &kp KP_ASTERISK  &kp SQT        &kp DQT
+          &trans    &trans  &trans    &trans      &trans         &trans     &trans         &trans           &trans         &trans
+&kp HOME  &trans    &trans  &trans    &trans      &trans         &kp UNDER  &kp EQUAL      &trans           &kp BACKSLASH  &kp SLASH  &kp END
                             &trans    &kp ENTER   &trans         &trans     &trans         &trans
             >;
         };
