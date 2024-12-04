@@ -49,6 +49,17 @@
             global-quick-tap;
             bindings = <&kp>, <&kp>;
         };
+
+        hmhp: hmhp {
+            compatible = "zmk,behavior-hold-tap";
+            label = "HM_HOLD_PREFERRED";
+            bindings = <&kp>, <&kp>;
+
+            #binding-cells = <2>;
+            tapping-term-ms = <100>;
+            quick-tap-ms = <75>;
+            retro-tap;
+        };
     };
 
     combos {
@@ -66,10 +77,10 @@
         Base {
             label = "Base";
             bindings = <
-              &kp Q             &kp W               &kp E      &kp R        &kp T        &kp Y      &kp U            &kp I       &kp O                 &kp P
-              &hm LEFT_SHIFT A  &hm LEFT_CONTROL S  &kp D      &kp F        &kp G        &kp H      &kp J            &kp K       &hm RIGHT_CONTROL L   &hm RIGHT_SHIFT SEMICOLON
-&lt 3 ESCAPE  &mt LEFT_ALT Z    &mt LEFT_META X     &kp C      &kp V        &kp B        &kp N      &kp M            &kp COMMA   &mt LEFT_META PERIOD  &mt RIGHT_ALT SLASH        &kp APOSTROPHE
-                                                    &kp MINUS  &lt 1 ENTER  &kp SPACE    &kp SPACE  &lt 2 BACKSPACE  &kp DELETE
+              &kp Q               &kp W               &kp E      &kp R        &kp T        &kp Y      &kp U            &kp I       &kp O                 &kp P
+              &hmhp LEFT_SHIFT A  &hm LEFT_CONTROL S  &kp D      &kp F        &kp G        &kp H      &kp J            &kp K       &hm RIGHT_CONTROL L   &hmhp RIGHT_SHIFT SEMICOLON
+&lt 3 ESCAPE  &mt LEFT_ALT Z      &mt LEFT_META X     &kp C      &kp V        &kp B        &kp N      &kp M            &kp COMMA   &mt LEFT_META PERIOD  &mt RIGHT_ALT SLASH          &kp APOSTROPHE
+                                                      &kp MINUS  &lt 1 ENTER  &kp SPACE    &kp SPACE  &lt 2 BACKSPACE  &kp DELETE
             >;
         };
 
