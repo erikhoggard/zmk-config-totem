@@ -39,27 +39,65 @@
 
 / {
     behaviors {
-        hm: homerow_mods {
+        // SHIFT on the home-row pinkies (A / ;). "hold-preferred" makes a quick
+        // shift+letter *mash* capitalize, firing the moment the next key is pressed
+        // (no need to release the letter first). require-prior-idle-ms forces a tap
+        // when you're mid-flow typing fast, which kills accidental mods on rolls.
+        // hold-trigger-key-positions = opposite hand + thumbs, so same-hand rolls
+        // (e.g. "as") never trigger shift. Left/right split because the trigger
+        // positions differ per hand.
+        hps_l: homerow_shift_left {
             compatible = "zmk,behavior-hold-tap";
-            label = "HOMEROW_MODS";
+            label = "HRS_LEFT";
             #binding-cells = <2>;
-            flavor = "tap-preferred";
-            tapping-term-ms = <200>;
-            quick-tap-ms = <125>;
-            global-quick-tap;
             bindings = <&kp>, <&kp>;
+            flavor = "hold-preferred";
+            tapping-term-ms = <200>;
+            quick-tap-ms = <175>;
+            require-prior-idle-ms = <150>;
+            hold-trigger-key-positions = <5 6 7 8 9 15 16 17 18 19 26 27 28 29 30 31 32 33 34 35 36 37>;
+            hold-trigger-on-release;
         };
 
-        hmhp: hmhp {
+        hps_r: homerow_shift_right {
             compatible = "zmk,behavior-hold-tap";
-            label = "HM_HOLD_PREFERRED";
-            bindings = <&kp>, <&kp>;
-
+            label = "HRS_RIGHT";
             #binding-cells = <2>;
-            tapping-term-ms = <175>;
-            retro-tap;
+            bindings = <&kp>, <&kp>;
+            flavor = "hold-preferred";
+            tapping-term-ms = <200>;
+            quick-tap-ms = <175>;
+            require-prior-idle-ms = <150>;
+            hold-trigger-key-positions = <0 1 2 3 4 10 11 12 13 14 20 21 22 23 24 25 32 33 34 35 36 37>;
+            hold-trigger-on-release;
+        };
+
+        // CTRL on the home-row ring fingers (S / L). "balanced" is safer against
+        // roll misfires for keys you don't mash like shift. Same positional gating.
+        hm_l: homerow_mod_left {
+            compatible = "zmk,behavior-hold-tap";
+            label = "HRM_LEFT";
+            #binding-cells = <2>;
+            bindings = <&kp>, <&kp>;
             flavor = "balanced";
-            quick-tap-ms = <125>;
+            tapping-term-ms = <280>;
+            quick-tap-ms = <175>;
+            require-prior-idle-ms = <150>;
+            hold-trigger-key-positions = <5 6 7 8 9 15 16 17 18 19 26 27 28 29 30 31 32 33 34 35 36 37>;
+            hold-trigger-on-release;
+        };
+
+        hm_r: homerow_mod_right {
+            compatible = "zmk,behavior-hold-tap";
+            label = "HRM_RIGHT";
+            #binding-cells = <2>;
+            bindings = <&kp>, <&kp>;
+            flavor = "balanced";
+            tapping-term-ms = <280>;
+            quick-tap-ms = <175>;
+            require-prior-idle-ms = <150>;
+            hold-trigger-key-positions = <0 1 2 3 4 10 11 12 13 14 20 21 22 23 24 25 32 33 34 35 36 37>;
+            hold-trigger-on-release;
         };
     };
 
@@ -70,6 +108,17 @@
             bindings = <&kp LA(TAB)>;
             key-positions = <32 10>;
         };
+
+        // Capital "I" — press J + L together (right index + ring). "jl" is never a
+        // real digraph and the tight timeout means sequential typing won't trigger
+        // it, so this is a misfire-proof way to type the pronoun "I" without relying
+        // on the home-row shift at all.
+        iCombo {
+            bindings = <&kp LS(I)>;
+            key-positions = <16 18>;
+            timeout-ms = <40>;
+            layers = <0>;
+        };
     };
 
     keymap {
@@ -79,7 +128,7 @@
             label = "Base";
             bindings = <
               &kp Q               &kp W               &kp E      &kp R        &kp T        &kp Y      &kp U            &kp I       &kp O                 &kp P
-              &hmhp LEFT_SHIFT A  &hm LEFT_CONTROL S  &kp D      &kp F        &kp G        &kp H      &kp J            &kp K       &hm RIGHT_CONTROL L   &hmhp RIGHT_SHIFT SEMICOLON
+              &hps_l LEFT_SHIFT A &hm_l LEFT_CONTROL S &kp D     &kp F        &kp G        &kp H      &kp J            &kp K       &hm_r RIGHT_CONTROL L &hps_r RIGHT_SHIFT SEMICOLON
 &lt 3 ESCAPE  &mt LEFT_ALT Z      &mt LEFT_META X     &kp C      &kp V        &kp B        &kp N      &kp M            &kp COMMA   &mt LEFT_META PERIOD  &mt RIGHT_ALT SLASH          &kp APOSTROPHE
                                                       &kp MINUS  &lt 1 ENTER  &kp SPACE    &kp SPACE  &lt 2 BACKSPACE  &kp DELETE
             >;
