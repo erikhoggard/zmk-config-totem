@@ -62,8 +62,10 @@
             tapping-term-ms = <200>;
             quick-tap-ms = <175>;
             retro-tap;
+            // No hold-trigger-on-release: with hold-preferred it defers the
+            // same-hand check until after the hold commits, letting "what"/"that"
+            // misfire (a shifts the following t). Evaluating on keypress blocks it.
             hold-trigger-key-positions = <5 6 7 8 9 15 16 17 18 19 26 27 28 29 30 31>;
-            hold-trigger-on-release;
         };
 
         hps_r: homerow_shift_right {
@@ -76,7 +78,6 @@
             quick-tap-ms = <175>;
             retro-tap;
             hold-trigger-key-positions = <0 1 2 3 4 10 11 12 13 14 20 21 22 23 24 25>;
-            hold-trigger-on-release;
         };
 
         // CTRL on the home-row ring fingers (S / L). "balanced" is safer against
