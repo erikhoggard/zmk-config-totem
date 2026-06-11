@@ -47,10 +47,6 @@
         // NO retro-tap on purpose: an aborted shift (hold >200ms, press nothing)
         // emits NOTHING rather than a stray Esc/' at the focused window; the
         // trade is a lone tap must be released within the tapping term.
-        // KNOWN RISK on the right one: a fast ' -> letter roll in contractions
-        // ("don't", "it's") where ' is still held when the letter lands will
-        // shift it ("donT"). If that shows up, the fix is making that key's tap
-        // a roll-proof character instead of '.
         // History: left shift was a home-row mod on A (see hps_r for the config),
         // but fast cross-hand a-words ("and", "want", "can't" -> "Nd", "wNt",
         // "cN't") are mechanically identical to an intentional shift mash —
@@ -63,6 +59,33 @@
             flavor = "hold-preferred";
             tapping-term-ms = <200>;
             quick-tap-ms = <175>;
+        };
+
+        // Context-aware ' / right-shift key (antecedent-morph module, aka
+        // adaptive keys). If the most recently RELEASED key within 300ms was a
+        // letter, we're mid-word -> plain apostrophe, so contractions ("don't",
+        // "it's") can never misfire a shift. Otherwise — after space / enter /
+        // backspace / any pause — it's the hold-tap shift, so word-start
+        // capitals mash like a normal keyboard. Conditions on WHAT was typed,
+        // not how fast, which is why this works where require-prior-idle didn't.
+        // Caveat: if space is still physically held when ' goes down (deep
+        // space->shift roll), the antecedent is the previous word's last letter
+        // -> plain ' -> missed capital. Tune max-delay-ms down if that bites.
+        aq: adaptive_quote {
+            compatible = "zmk,behavior-antecedent-morph";
+            #binding-cells = <0>;
+            defaults = <&hs RIGHT_SHIFT APOSTROPHE>;
+            antecedents = <A B C D E F G H I J K L M N O P Q R S T U V W X Y Z>;
+            bindings = <&kp APOSTROPHE>, <&kp APOSTROPHE>, <&kp APOSTROPHE>,
+                       <&kp APOSTROPHE>, <&kp APOSTROPHE>, <&kp APOSTROPHE>,
+                       <&kp APOSTROPHE>, <&kp APOSTROPHE>, <&kp APOSTROPHE>,
+                       <&kp APOSTROPHE>, <&kp APOSTROPHE>, <&kp APOSTROPHE>,
+                       <&kp APOSTROPHE>, <&kp APOSTROPHE>, <&kp APOSTROPHE>,
+                       <&kp APOSTROPHE>, <&kp APOSTROPHE>, <&kp APOSTROPHE>,
+                       <&kp APOSTROPHE>, <&kp APOSTROPHE>, <&kp APOSTROPHE>,
+                       <&kp APOSTROPHE>, <&kp APOSTROPHE>, <&kp APOSTROPHE>,
+                       <&kp APOSTROPHE>, <&kp APOSTROPHE>;
+            max-delay-ms = <300>;
         };
 
         // RIGHT SHIFT stays on home-row ';' — unlike 'a', ';' followed quickly by
@@ -137,7 +160,7 @@
             bindings = <
               &kp Q               &kp W               &kp E      &kp R        &kp T        &kp Y      &kp U            &kp I       &kp O                 &kp P
               &kp A               &hm_l LEFT_CONTROL S &kp D     &kp F        &kp G        &kp H      &kp J            &kp K       &hm_r RIGHT_CONTROL L &hps_r RIGHT_SHIFT SEMICOLON
-&hs LEFT_SHIFT ESCAPE  &mt LEFT_ALT Z &mt LEFT_META X  &kp C     &kp V        &kp B        &kp N      &kp M            &kp COMMA   &mt LEFT_META PERIOD  &mt RIGHT_ALT SLASH          &hs RIGHT_SHIFT APOSTROPHE
+&hs LEFT_SHIFT ESCAPE  &mt LEFT_ALT Z &mt LEFT_META X  &kp C     &kp V        &kp B        &kp N      &kp M            &kp COMMA   &mt LEFT_META PERIOD  &mt RIGHT_ALT SLASH          &aq
                                                       &kp MINUS  &lt 1 ENTER  &kp SPACE    &kp SPACE  &lt 2 BACKSPACE  &lt 3 DELETE
             >;
         };
